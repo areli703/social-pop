@@ -1,6 +1,5 @@
 import React, { ReactNode, useState, useEffect } from 'react';
 import { mdiClose, mdiDotsVertical } from '@mdi/js';
-import { containerMaxW } from '../config';
 import BaseIcon from './BaseIcon';
 import NavBarItemPlain from './NavBarItemPlain';
 import NavBarMenuList from './NavBarMenuList';
@@ -8,7 +7,7 @@ import { MenuNavBarItem } from '../interfaces';
 
 type Props = {
   menu: MenuNavBarItem[];
-  className: string;
+  className?: string;
   children: ReactNode;
 };
 
@@ -33,28 +32,27 @@ export default function NavBar({ menu, className = '', children }: Props) {
 
   return (
     <nav
-      className={`${className} top-0 inset-x-0 fixed bg-gray-50 h-14 z-30 transition-position w-screen lg:w-auto dark:bg-dark-800`}
+      className={`${className} top-0 inset-x-0 fixed bg-white shadow-lg h-16 z-30 transition-all duration-300 w-screen lg:w-auto dark:bg-gray-900 ${
+        isScrolled ? 'border-b border-gray-300 dark:border-gray-700' : ''
+      }`}
     >
-      <div
-        className={`flex lg:items-stretch ${containerMaxW} ${
-          isScrolled && `border-b border-pavitra-400 dark:border-dark-700`
-        }`}
-      >
-        <div className='flex flex-1 items-stretch h-14'>{children}</div>
-        <div className='flex-none items-stretch flex h-14 lg:hidden'>
+      <div className={`flex items-center justify-between max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full`}>
+        <div className='flex items-center h-full'>{children}</div>
+        <div className='flex lg:hidden'>
           <NavBarItemPlain onClick={handleMenuNavBarToggleClick}>
             <BaseIcon
               path={isMenuNavBarActive ? mdiClose : mdiDotsVertical}
               size='24'
+              className='text-gray-500 dark:text-gray-300'
             />
           </NavBarItemPlain>
         </div>
         <div
           className={`${
             isMenuNavBarActive ? 'block' : 'hidden'
-          } max-h-screen-menu overflow-y-auto lg:overflow-visible absolute w-screen top-14 left-0 bg-gray-50 shadow-lg lg:w-auto lg:flex lg:static lg:shadow-none dark:bg-dark-800`}
+          } lg:flex lg:items-center lg:static absolute top-16 left-0 w-full lg:w-auto bg-white dark:bg-gray-900 shadow-md lg:shadow-none`}
         >
-          <NavBarMenuList menu={menu} />
+          <NavBarMenuList menu={menu} className="flex flex-col lg:flex-row lg:items-center" />
         </div>
       </div>
     </nav>
